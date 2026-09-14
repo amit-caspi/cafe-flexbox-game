@@ -9,7 +9,10 @@
 <body>
   <div class="app-wrapper">
     <header class="game-header">
-      <h1>Café Flex ☕🧁</h1>
+      <div class="header-top">
+        <h1>Café Flex ☕🧁</h1>
+        <button id="btn-reset-all" class="btn-top-reset" type="button" title="Reset All Progress">Reset Game ⚠️</button>
+      </div>
       <p>Organize bakery and drink orders on the counter using CSS Flexbox!</p>
       
       <!-- Stage Navigation Bar -->
@@ -42,10 +45,11 @@
           <div class="code-line">}</div>
         </div>
 
+        <!-- Action Buttons: Exactly 2 buttons per state for clean UI -->
         <div class="actions">
           <button id="btn-check" class="btn btn-primary" type="button">Check Order 🛎️</button>
-          <button id="btn-reset" class="btn btn-secondary" type="button">Reset 🔄</button>
           <button id="btn-next" class="btn btn-next hidden" type="button">Next Stage ➡️</button>
+          <button id="btn-reset" class="btn btn-secondary" type="button">Reset Stage 🔄</button>
         </div>
 
         <div id="feedback-message" class="feedback"></div>

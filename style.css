@@ -28,10 +28,38 @@ body {
   text-align: center;
 }
 
+.header-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 4px;
+}
+
 .game-header h1 {
   font-size: 2.2rem;
   color: #f59e0b;
-  margin-bottom: 4px;
+}
+
+/* Top Right Reset All Button */
+.btn-top-reset {
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-top-reset:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 .game-header p {
@@ -211,17 +239,24 @@ body {
   border-color: #f59e0b;
 }
 
-/* Actions Buttons */
+/* Actions Buttons: Always fit seamlessly */
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 .btn {
-  padding: 10px 16px;
-  font-size: 0.9rem;
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
   font-weight: 600;
+  white-space: nowrap;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -229,7 +264,7 @@ body {
 }
 
 .btn:hover {
-  opacity: 0.9;
+  opacity: 0.92;
   transform: translateY(-1px);
 }
 
@@ -239,7 +274,7 @@ body {
 }
 
 .btn-secondary {
-  background-color: #64748b;
+  background-color: #475569;
   color: #ffffff;
 }
 
@@ -249,8 +284,9 @@ body {
 }
 
 .btn-large {
-  padding: 12px 24px;
+  padding: 12px 28px;
   font-size: 1.05rem;
+  flex: none;
 }
 
 .hidden {
@@ -447,5 +483,12 @@ body {
   .board-panel {
     border-left: none;
     border-top: 1px solid #334155;
+  }
+  .btn-top-reset {
+    position: static;
+    margin-top: 6px;
+  }
+  .header-top {
+    flex-direction: column;
   }
 }

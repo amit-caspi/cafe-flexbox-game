@@ -147,6 +147,7 @@ const gameContainer = document.getElementById("game-container");
 const btnCheck = document.getElementById("btn-check");
 const btnReset = document.getElementById("btn-reset");
 const btnNext = document.getElementById("btn-next");
+const btnResetAll = document.getElementById("btn-reset-all");
 
 // Victory Modal Elements
 const victoryModal = document.getElementById("victory-modal");
@@ -160,8 +161,13 @@ function updateTotalScoreDisplay() {
 
 function updateStageScoreDisplay() {
   const attempts = stageAttemptsMap[currentStageIndex] || 0;
-  const currentVal = Math.max(20, 100 - attempts * 10);
+  const currentVal = attempts <= 1 ? 100 : Math.max(20, 100 - (attempts - 1) * 10);
   stagePointsCurrentEl.textContent = currentVal;
+}
+
+function updateAttemptsDisplay() {
+  const attempts = stageAttemptsMap[currentStageIndex] || 0;
+  attemptCountEl.textContent = attempts;
 }
 
 // --- 5. Render Navigation Bar ---
@@ -192,9 +198,10 @@ function loadStage(index) {
 
   localStorage.setItem("cafe_flex_stage", index);
 
+  // Sync all displays immediately
   updateTotalScoreDisplay();
   updateStageScoreDisplay();
-  attemptCountEl.textContent = stageAttemptsMap[index] || 0;
+  updateAttemptsDisplay();
 
   renderStageNav();
   stageBadge.textContent = `Stage ${index + 1} of ${STAGES.length}`;
@@ -204,14 +211,13 @@ function loadStage(index) {
   feedbackMessage.className = "feedback";
   counterFrame.classList.remove("win-glow");
 
+  // If this stage was already beaten, display Next Stage button
   if (index < unlockedStageIndex) {
+    btnCheck.classList.add("hidden");
     btnNext.classList.remove("hidden");
-    if (index === STAGES.length - 1) {
-      btnNext.textContent = "Complete Service 🏆";
-    } else {
-      btnNext.textContent = "Next Stage ➡️";
-    }
+    btnNext.textContent = (index === STAGES.length - 1) ? "Complete Service 🏆" : "Next Stage ➡️";
   } else {
+    btnCheck.classList.remove("hidden");
     btnNext.classList.add("hidden");
   }
 
@@ -282,8 +288,16 @@ function applyUserStyles() {
   });
 }
 
-// --- 7. Check Solution ---
+// --- 7. Check Solution (Evaluation & Strict Counter Update) ---
 function checkSolution() {
+  // 1. Increment attempts map FIRST
+  const currentAttempts = (stageAttemptsMap[currentStageIndex] || 0) + 1;
+  stageAttemptsMap[currentStageIndex] = currentAttempts;
+  localStorage.setItem("cafe_flex_attempts", JSON.stringify(stageAttemptsMap));
+  
+  // 2. Direct DOM update for counter
+  updateAttemptsDisplay();
+
   const stage = STAGES[currentStageIndex];
   const selects = controlsContainer.querySelectorAll(".control-select");
   let isCorrect = true;
@@ -296,25 +310,24 @@ function checkSolution() {
   });
 
   if (isCorrect) {
-    const attempts = stageAttemptsMap[currentStageIndex] || 0;
-    const earnedScore = Math.max(20, 100 - attempts * 10);
+    const earnedScore = Math.max(20, 100 - (currentAttempts - 1) * 10);
     
+    // Save high score for this stage
     if (earnedScore > (stageScoresMap[currentStageIndex] || 0)) {
       stageScoresMap[currentStageIndex] = earnedScore;
       localStorage.setItem("cafe_flex_scores", JSON.stringify(stageScoresMap));
       updateTotalScoreDisplay();
     }
 
+    stagePointsCurrentEl.textContent = earnedScore;
     feedbackMessage.textContent = `Order up! Perfect arrangement! 🛎️ (+${earnedScore} pts awarded!)`;
     feedbackMessage.className = "feedback success";
     counterFrame.classList.add("win-glow");
-    btnNext.classList.remove("hidden");
 
-    if (currentStageIndex === STAGES.length - 1) {
-      btnNext.textContent = "Complete Service 🏆";
-    } else {
-      btnNext.textContent = "Next Stage ➡️";
-    }
+    // Seamless button swap
+    btnCheck.classList.add("hidden");
+    btnNext.classList.remove("hidden");
+    btnNext.textContent = (currentStageIndex === STAGES.length - 1) ? "Complete Service 🏆" : "Next Stage ➡️";
 
     const dishes = dishBoard.querySelectorAll(".dish-item");
     dishes.forEach(dish => {
@@ -329,9 +342,6 @@ function checkSolution() {
       renderStageNav();
     }
   } else {
-    stageAttemptsMap[currentStageIndex] = (stageAttemptsMap[currentStageIndex] || 0) + 1;
-    localStorage.setItem("cafe_flex_attempts", JSON.stringify(stageAttemptsMap));
-    attemptCountEl.textContent = stageAttemptsMap[currentStageIndex];
     updateStageScoreDisplay();
 
     feedbackMessage.textContent = "Not quite right yet! Order failed (-10 pts). Try again!";
@@ -362,6 +372,7 @@ function resetCurrentStage() {
   counterFrame.classList.remove("win-glow");
 
   if (currentStageIndex >= unlockedStageIndex) {
+    btnCheck.classList.remove("hidden");
     btnNext.classList.add("hidden");
   }
 }
@@ -372,38 +383,37 @@ function nextStage() {
     currentStageIndex++;
     loadStage(currentStageIndex);
   } else {
-    // Show Full Screen Victory Modal
     const total = Object.values(stageScoresMap).reduce((sum, val) => sum + val, 0);
     modalFinalScore.textContent = `${total} / 800`;
     victoryModal.classList.remove("hidden");
   }
 }
 
-// --- 10. Play Again / Restart Game ---
-function restartGame() {
-  victoryModal.classList.add("hidden");
-  localStorage.removeItem("cafe_flex_stage");
-  localStorage.removeItem("cafe_flex_unlocked");
-  localStorage.removeItem("cafe_flex_scores");
-  localStorage.removeItem("cafe_flex_attempts");
+// --- 10. Reset Full Game Progress ---
+function resetEntireGame() {
+  if (confirm("Are you sure you want to reset all game progress and scores?")) {
+    victoryModal.classList.add("hidden");
+    localStorage.clear();
 
-  currentStageIndex = 0;
-  unlockedStageIndex = 0;
-  stageScoresMap = {};
-  stageAttemptsMap = {};
-  STAGES.forEach((_, idx) => {
-    stageAttemptsMap[idx] = 0;
-    stageScoresMap[idx] = 0;
-  });
+    currentStageIndex = 0;
+    unlockedStageIndex = 0;
+    stageScoresMap = {};
+    stageAttemptsMap = {};
+    STAGES.forEach((_, idx) => {
+      stageAttemptsMap[idx] = 0;
+      stageScoresMap[idx] = 0;
+    });
 
-  loadStage(0);
+    loadStage(0);
+  }
 }
 
 // Event Listeners
 btnCheck.addEventListener("click", checkSolution);
 btnReset.addEventListener("click", resetCurrentStage);
 btnNext.addEventListener("click", nextStage);
-btnPlayAgain.addEventListener("click", restartGame);
+btnResetAll.addEventListener("click", resetEntireGame);
+btnPlayAgain.addEventListener("click", resetEntireGame);
 
 // Start Game
 loadStage(currentStageIndex);
