@@ -1,8 +1,10 @@
 # Café Flex ☕🧁
 
+By Amit Caspi & Maya Yosef
+
 An interactive, responsive web game designed to learn and practice CSS Flexbox concepts.
 
-🔗 **Live Demo:** [https://mayaycs.github.io/cafe-flexbox-game/](https://mayaycs.github.io/cafe-flexbox-game/)
+🔗 **Live Demo:** [https://amit-caspi.github.io/cafe-flexbox-game/](https://amit-caspi.github.io/cafe-flexbox-game/)
 
 ---
 
@@ -44,4 +46,4 @@ The project is built entirely with vanilla web technologies without any external
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/mayaycs/cafe-flexbox-game.git](https://github.com/mayaycs/cafe-flexbox-game.git)
+   git clone [https://github.com/amit-caspi/cafe-flexbox-game.git](https://github.com/amit-caspi/cafe-flexbox-game.git)
