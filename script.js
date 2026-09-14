@@ -148,6 +148,11 @@ const btnCheck = document.getElementById("btn-check");
 const btnReset = document.getElementById("btn-reset");
 const btnNext = document.getElementById("btn-next");
 
+// Victory Modal Elements
+const victoryModal = document.getElementById("victory-modal");
+const modalFinalScore = document.getElementById("modal-final-score");
+const btnPlayAgain = document.getElementById("btn-play-again");
+
 function updateTotalScoreDisplay() {
   const total = Object.values(stageScoresMap).reduce((sum, val) => sum + val, 0);
   totalScoreEl.textContent = total;
@@ -201,6 +206,11 @@ function loadStage(index) {
 
   if (index < unlockedStageIndex) {
     btnNext.classList.remove("hidden");
+    if (index === STAGES.length - 1) {
+      btnNext.textContent = "Complete Service 🏆";
+    } else {
+      btnNext.textContent = "Next Stage ➡️";
+    }
   } else {
     btnNext.classList.add("hidden");
   }
@@ -300,6 +310,12 @@ function checkSolution() {
     counterFrame.classList.add("win-glow");
     btnNext.classList.remove("hidden");
 
+    if (currentStageIndex === STAGES.length - 1) {
+      btnNext.textContent = "Complete Service 🏆";
+    } else {
+      btnNext.textContent = "Next Stage ➡️";
+    }
+
     const dishes = dishBoard.querySelectorAll(".dish-item");
     dishes.forEach(dish => {
       dish.classList.remove("item-bounce");
@@ -350,23 +366,44 @@ function resetCurrentStage() {
   }
 }
 
-// --- 9. Advance Stage ---
+// --- 9. Advance Stage or Trigger Victory ---
 function nextStage() {
   if (currentStageIndex < STAGES.length - 1) {
     currentStageIndex++;
     loadStage(currentStageIndex);
   } else {
+    // Show Full Screen Victory Modal
     const total = Object.values(stageScoresMap).reduce((sum, val) => sum + val, 0);
-    feedbackMessage.textContent = `🎉 Master Barista Achieved! Final Score: ${total} / 800!`;
-    feedbackMessage.className = "feedback success";
-    btnNext.classList.add("hidden");
+    modalFinalScore.textContent = `${total} / 800`;
+    victoryModal.classList.remove("hidden");
   }
+}
+
+// --- 10. Play Again / Restart Game ---
+function restartGame() {
+  victoryModal.classList.add("hidden");
+  localStorage.removeItem("cafe_flex_stage");
+  localStorage.removeItem("cafe_flex_unlocked");
+  localStorage.removeItem("cafe_flex_scores");
+  localStorage.removeItem("cafe_flex_attempts");
+
+  currentStageIndex = 0;
+  unlockedStageIndex = 0;
+  stageScoresMap = {};
+  stageAttemptsMap = {};
+  STAGES.forEach((_, idx) => {
+    stageAttemptsMap[idx] = 0;
+    stageScoresMap[idx] = 0;
+  });
+
+  loadStage(0);
 }
 
 // Event Listeners
 btnCheck.addEventListener("click", checkSolution);
 btnReset.addEventListener("click", resetCurrentStage);
 btnNext.addEventListener("click", nextStage);
+btnPlayAgain.addEventListener("click", restartGame);
 
 // Start Game
 loadStage(currentStageIndex);
