@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Café Flex - Master CSS Flexbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <header class="game-header">
+      <h1>Café Flex ☕🧁</h1>
+      <p>Organize bakery and drink orders on the counter using CSS Flexbox!</p>
+      
+      <!-- Stage Navigation Bar -->
+      <nav id="stage-nav" class="stage-nav"></nav>
+    </header>
+
+    <main id="game-container">
+      <!-- Controls & Instructions Panel -->
+      <section class="sidebar-panel">
+        <div class="stage-info">
+          <div class="stage-header-row">
+            <span id="stage-badge" class="badge">Stage 1 of 8</span>
+            <div class="stats-group">
+              <span id="score-badge" class="badge badge-score">Total Score: <span id="total-score">0</span></span>
+              <span id="stage-score-badge" class="badge badge-stage">Stage Score: <span id="stage-points-current">100</span></span>
+              <span class="badge badge-secondary">Attempts: <span id="attempt-count">0</span></span>
+            </div>
+          </div>
+          <h2 id="stage-title">Morning Espresso</h2>
+          <p id="stage-instruction">Move the espresso cups to the right side of the counter.</p>
+        </div>
+
+        <div class="editor-box">
+          <div class="code-line">.order-counter {</div>
+          <div class="code-line indent">display: flex;</div>
+          
+          <!-- Dropdown controls injected by JS -->
+          <div id="controls-container" class="controls-area"></div>
+
+          <div class="code-line">}</div>
+        </div>
+
+        <div class="actions">
+          <button id="btn-check" class="btn btn-primary" type="button">Check Order 🛎️</button>
+          <button id="btn-reset" class="btn btn-secondary" type="button">Reset 🔄</button>
+          <button id="btn-next" class="btn btn-next hidden" type="button">Next Stage ➡️</button>
+        </div>
+
+        <div id="feedback-message" class="feedback"></div>
+      </section>
+
+      <!-- Fixed Board Panel -->
+      <section class="board-panel">
+        <div id="counter-frame" class="counter-frame">
+          <!-- Target mats layer -->
+          <div id="target-board" class="board-layer"></div>
+          <!-- Food items layer -->
+          <div id="dish-board" class="board-layer"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
