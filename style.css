@@ -25,7 +25,7 @@ body {
   position: relative;
 }
 
-/* --- Header Layout: Perfectly Centered on Desktop --- */
+/* --- Header Layout: Desktop --- */
 .game-header {
   width: 100%;
   text-align: center;
@@ -47,7 +47,7 @@ body {
   margin: 0;
 }
 
-/* Reset All Button: Pinned to container right corner inside layout */
+/* Reset All Button (Desktop) */
 .btn-top-reset {
   position: absolute;
   right: 0;
@@ -484,46 +484,53 @@ body {
   color: #f59e0b;
 }
 
-/* --- Mobile Responsiveness --- */
+/* --- Mobile Specific Responsiveness --- */
 @media (max-width: 820px) {
   body {
-    padding: 10px;
+    padding: 12px 10px;
     align-items: flex-start;
   }
 
   .app-wrapper {
-    gap: 10px;
+    gap: 12px;
   }
 
   .header-top {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* Big, bold header title on mobile */
+  .game-header h1 {
+    font-size: 2.1rem;
+    text-align: left;
+    line-height: 1.1;
   }
 
   .btn-top-reset {
     position: static;
     transform: none;
-    font-size: 0.78rem;
-    padding: 5px 10px;
-  }
-
-  .game-header h1 {
-    font-size: 1.8rem;
-    text-align: left;
+    font-size: 0.8rem;
+    padding: 6px 12px;
   }
 
   .game-header p {
     display: none;
   }
 
+  /* Spacious Stage Navigation Bar on Mobile */
   .stage-nav {
-    gap: 6px;
-    margin-top: 2px;
+    gap: 7px;
+    margin-bottom: 14px;
   }
 
   .stage-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.8rem;
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
   }
 
   #game-container {
