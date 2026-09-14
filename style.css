@@ -25,7 +25,7 @@ body {
   position: relative;
 }
 
-/* --- Header Layout: Fully Centered on Both Mobile & Desktop --- */
+/* --- Header Layout: Desktop --- */
 .game-header {
   width: 100%;
   text-align: center;
@@ -37,19 +37,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  min-height: 44px;
   margin-bottom: 4px;
 }
 
 .game-header h1 {
-  font-size: 2.2rem;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
   color: #f59e0b;
   text-align: center;
   margin: 0;
 }
 
-/* Reset All Button: Pinned to upper-right, never shifts the centered title */
+/* Reset All Button (Desktop: Pinned Right) */
 .btn-top-reset {
   position: absolute;
   right: 0;
@@ -494,43 +494,42 @@ body {
   }
 
   .app-wrapper {
-    gap: 12px;
+    gap: 10px;
   }
 
+  /* Vertical Flow for Mobile Header */
   .header-top {
-    position: relative;
-    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 10px;
   }
 
-  /* Centered Title on Mobile */
+  /* Enlarged, Prominent Title on Mobile */
   .game-header h1 {
-    font-size: 1.75rem;
+    font-size: 2.4rem;
+    font-weight: 800;
     text-align: center;
-    margin: 0 auto;
+    margin: 0;
   }
 
-  /* Reset Button remains docked right without pulling the title */
+  /* Centered Reset Button below title */
   .btn-top-reset {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.72rem;
-    padding: 4px 9px;
+    position: static;
+    transform: none;
+    font-size: 0.78rem;
+    padding: 5px 14px;
   }
 
   .game-header p {
     display: none;
   }
 
-  /* Spacious Stage Navigation Bar on Mobile */
+  /* Stage Navigation on Mobile */
   .stage-nav {
     gap: 7px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .stage-btn {
