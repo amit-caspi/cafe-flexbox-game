@@ -198,7 +198,6 @@ function loadStage(index) {
 
   localStorage.setItem("cafe_flex_stage", index);
 
-  // Sync all displays immediately
   updateTotalScoreDisplay();
   updateStageScoreDisplay();
   updateAttemptsDisplay();
@@ -211,7 +210,6 @@ function loadStage(index) {
   feedbackMessage.className = "feedback";
   counterFrame.classList.remove("win-glow");
 
-  // If this stage was already beaten, display Next Stage button
   if (index < unlockedStageIndex) {
     btnCheck.classList.add("hidden");
     btnNext.classList.remove("hidden");
@@ -290,12 +288,10 @@ function applyUserStyles() {
 
 // --- 7. Check Solution (Evaluation & Strict Counter Update) ---
 function checkSolution() {
-  // 1. Increment attempts map FIRST
   const currentAttempts = (stageAttemptsMap[currentStageIndex] || 0) + 1;
   stageAttemptsMap[currentStageIndex] = currentAttempts;
   localStorage.setItem("cafe_flex_attempts", JSON.stringify(stageAttemptsMap));
   
-  // 2. Direct DOM update for counter
   updateAttemptsDisplay();
 
   const stage = STAGES[currentStageIndex];
@@ -312,7 +308,6 @@ function checkSolution() {
   if (isCorrect) {
     const earnedScore = Math.max(20, 100 - (currentAttempts - 1) * 10);
     
-    // Save high score for this stage
     if (earnedScore > (stageScoresMap[currentStageIndex] || 0)) {
       stageScoresMap[currentStageIndex] = earnedScore;
       localStorage.setItem("cafe_flex_scores", JSON.stringify(stageScoresMap));
@@ -324,7 +319,6 @@ function checkSolution() {
     feedbackMessage.className = "feedback success";
     counterFrame.classList.add("win-glow");
 
-    // Seamless button swap
     btnCheck.classList.add("hidden");
     btnNext.classList.remove("hidden");
     btnNext.textContent = (currentStageIndex === STAGES.length - 1) ? "Complete Service 🏆" : "Next Stage ➡️";
@@ -389,31 +383,41 @@ function nextStage() {
   }
 }
 
-// --- 10. Reset Full Game Progress ---
-function resetEntireGame() {
+// Helper: Wipe data and restart game state
+function clearGameDataAndRestart() {
+  localStorage.clear();
+  currentStageIndex = 0;
+  unlockedStageIndex = 0;
+  stageScoresMap = {};
+  stageAttemptsMap = {};
+  STAGES.forEach((_, idx) => {
+    stageAttemptsMap[idx] = 0;
+    stageScoresMap[idx] = 0;
+  });
+  loadStage(0);
+}
+
+// --- 10. Reset Handlers ---
+// For Top Button: Keep safety confirmation
+function handleTopResetGame() {
   if (confirm("Are you sure you want to reset all game progress and scores?")) {
     victoryModal.classList.add("hidden");
-    localStorage.clear();
-
-    currentStageIndex = 0;
-    unlockedStageIndex = 0;
-    stageScoresMap = {};
-    stageAttemptsMap = {};
-    STAGES.forEach((_, idx) => {
-      stageAttemptsMap[idx] = 0;
-      stageScoresMap[idx] = 0;
-    });
-
-    loadStage(0);
+    clearGameDataAndRestart();
   }
+}
+
+// For Victory Modal "Play Again": Restart seamlessly without prompt
+function handlePlayAgainDirect() {
+  victoryModal.classList.add("hidden");
+  clearGameDataAndRestart();
 }
 
 // Event Listeners
 btnCheck.addEventListener("click", checkSolution);
 btnReset.addEventListener("click", resetCurrentStage);
 btnNext.addEventListener("click", nextStage);
-btnResetAll.addEventListener("click", resetEntireGame);
-btnPlayAgain.addEventListener("click", resetEntireGame);
+btnResetAll.addEventListener("click", handleTopResetGame);
+btnPlayAgain.addEventListener("click", handlePlayAgainDirect);
 
 // Start Game
 loadStage(currentStageIndex);

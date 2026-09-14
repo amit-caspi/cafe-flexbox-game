@@ -2,7 +2,7 @@
 
 An interactive, responsive web game designed to learn and practice CSS Flexbox concepts.
 
-🔗 **Live Demo:** [https://mayaycs.github.io/chef-flexbox-game/](https://mayaycs.github.io/chef-flexbox-game/)
+🔗 **Live Demo:** [https://mayaycs.github.io/cafe-flexbox-game/](https://mayaycs.github.io/cafe-flexbox-game/)
 
 ---
 
@@ -44,4 +44,4 @@ The project is built entirely with vanilla web technologies without any external
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/mayaycs/chef-flexbox-game.git](https://github.com/mayaycs/chef-flexbox-game.git)
+   git clone [https://github.com/mayaycs/cafe-flexbox-game.git](https://github.com/mayaycs/cafe-flexbox-game.git)
