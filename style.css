@@ -13,7 +13,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 20px;
 }
 
 .app-wrapper {
@@ -22,50 +22,59 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
 }
 
+/* --- Header Layout: Perfectly Centered on Desktop --- */
 .game-header {
+  width: 100%;
   text-align: center;
+  position: relative;
 }
 
 .header-top {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   margin-bottom: 4px;
 }
 
 .game-header h1 {
   font-size: 2.2rem;
   color: #f59e0b;
+  text-align: center;
+  margin: 0;
 }
 
-/* Top Right Reset All Button (Desktop) */
+/* Reset All Button: Pinned to container right corner inside layout */
 .btn-top-reset {
   position: absolute;
   right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   background-color: transparent;
-  color: #94a3b8;
-  border: 1px solid #334155;
-  padding: 6px 12px;
-  font-size: 0.8rem;
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 6px 14px;
+  font-size: 0.82rem;
   font-weight: 600;
   border-radius: 20px;
   cursor: pointer;
+  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
 .btn-top-reset:hover {
-  color: #ef4444;
   border-color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(239, 68, 68, 0.12);
 }
 
 .game-header p {
   color: #94a3b8;
   font-size: 0.92rem;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 /* --- Stage Navigation Dots/Buttons --- */
@@ -319,7 +328,7 @@ body {
   border-left: 1px solid #334155;
 }
 
-/* FIXED BOARD SIZE: 340px x 340px across ALL screens */
+/* FIXED BOARD SIZE: 340px x 340px */
 .counter-frame {
   position: relative;
   width: 340px;
@@ -475,7 +484,7 @@ body {
   color: #f59e0b;
 }
 
-/* --- Mobile Specific Responsiveness --- */
+/* --- Mobile Responsiveness --- */
 @media (max-width: 820px) {
   body {
     padding: 10px;
@@ -483,38 +492,32 @@ body {
   }
 
   .app-wrapper {
-    gap: 8px;
+    gap: 10px;
   }
 
-  /* Compact Header for Mobile */
+  .header-top {
+    justify-content: space-between;
+  }
+
+  .btn-top-reset {
+    position: static;
+    transform: none;
+    font-size: 0.78rem;
+    padding: 5px 10px;
+  }
+
   .game-header h1 {
-    font-size: 1.7rem;
-    margin-bottom: 0;
+    font-size: 1.8rem;
+    text-align: left;
   }
 
-  /* Hide long instruction text on mobile to save vertical space */
   .game-header p {
     display: none;
   }
 
-  /* Reposition Reset Game button to bottom-right floating badge */
-  .btn-top-reset {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    background-color: rgba(15, 20, 28, 0.9);
-    backdrop-filter: blur(6px);
-    border: 1px solid #ef4444;
-    color: #ef4444;
-    padding: 8px 14px;
-    font-size: 0.82rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 100;
-  }
-
   .stage-nav {
     gap: 6px;
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .stage-btn {
